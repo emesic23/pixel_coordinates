@@ -48,3 +48,4 @@ def euler_method(image, image_data, camera_mtx):
     
     fovy = 2 * np.arctan(height / (2 * (camera_mtx[1][1])))
     fovx = 2 * np.arctan(width / (2 * camera_mtx[0][0]))
+    return
