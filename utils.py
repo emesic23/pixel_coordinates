@@ -21,7 +21,9 @@ def get_world_coords(K, R, T, camera_coords):
     camera_coords_homo = cv2.convertPointsToHomogeneous(camera_coords)
     world_coords = []
     for coord in camera_coords_homo:
-        world_coords.append(np.linalg.pinv(K @ RT) @ coord[0])
+        world_coord = np.linalg.pinv(K @ RT) @ coord[0]
+        world_coord = world_coord[:3] / world_coord[3]
+        world_coords.append(world_coord)
     return np.array(world_coords)
 
 def get_world_latlon(world_coords, lat, lon):
@@ -31,6 +33,7 @@ def get_world_latlon(world_coords, lat, lon):
         lat_pix = lat + coord[1] / m_to_deg
         lon_pix = lon + coord[0] / (m_to_deg * np.cos(lat))
         latlons.append([lat_pix, lon_pix])
+
     return np.array(latlons)
 
 def euler_method(image, image_data, camera_mtx):
